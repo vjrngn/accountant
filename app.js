@@ -1,41 +1,28 @@
+require("dotenv").config();
+
 const express = require("express");
-const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-const { ApolloServer, gql } = require("apollo-server-express");
+const { ApolloServer } = require("apollo-server-express");
+const resolvers = require("./resolvers");
+const schemas = require("./schemas");
 
-const indexRouter = require("./routes/index");
-const usersRouter = require("./routes/users");
-
-const typeDefs = gql`
-  type Query {
-    "A simple type for getting started!"
-    hello: String
-  }
-`;
-
-const resolvers = {
-  Query: {
-    hello: () => "world",
-  },
-};
+const { APP_ENV = "development" } = process.env;
 
 const apolloServer = new ApolloServer({
-  typeDefs,
+  typeDefs: schemas,
   resolvers,
+  playground: APP_ENV !== "production"
 });
 
 const app = express();
+app.disable("x-powered-by");
 
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
-
-apolloServer.applyMiddleware({ app })
+apolloServer.applyMiddleware({ app });
 
 module.exports = app;
