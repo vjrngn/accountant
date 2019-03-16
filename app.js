@@ -1,13 +1,26 @@
 require("dotenv").config();
 
 const express = require("express");
+const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const { ApolloServer } = require("apollo-server-express");
 const resolvers = require("./resolvers");
 const schemas = require("./schemas");
 
-const { APP_ENV = "development" } = process.env;
+const {
+  APP_ENV = "development",
+  DB_NAME,
+  DB_HOST,
+  DB_PORT,
+  DB_USERNAME = '',
+  DB_PASSWORD = ''
+} = process.env;
+
+mongoose.connect(
+  `mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`,
+  { useNewUrlParser: true }
+);
 
 const apolloServer = new ApolloServer({
   typeDefs: schemas,
