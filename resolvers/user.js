@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const { User } = require("../models");
+const Joi = require("joi");
+const { signUpValidtor } = require("../schemas/user");
 const { UserInputError } = require("apollo-server-express");
 
 module.exports = {
@@ -25,7 +27,21 @@ module.exports = {
     signUp: (root, args, context, info) => {
       // TODO: validation
 
-      return User.create(args);
+      Joi.validate(args, signUpValidtor, function (err) {
+        if (err) {
+          throw new UserInputError('')
+        }
+
+        return User.create(args)
+      })
+
+      // Joi.validate(args, signUpValidtor, function (err, values) {
+      //   if (err) {
+      //     return console.log(err)
+      //   }
+
+      //   return User.create(args);
+      // });
     }
   }
 };

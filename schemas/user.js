@@ -1,4 +1,25 @@
+const Joi = require("joi");
 const { gql } = require("apollo-server-express");
+
+const signupValidator = Joi.object().keys({
+  name: Joi.string()
+    .max(254)
+    .required()
+    .label("Name"),
+  username: Joi.string()
+    .alphanum()
+    .min(4)
+    .max(30)
+    .required()
+    .label("Username"),
+  password: Joi.string()
+    .required()
+    .label("Password"),
+  email: Joi.string()
+    .email()
+    .required()
+    .label("Email")
+});
 
 module.exports = gql`
   extend type Query {
@@ -7,7 +28,12 @@ module.exports = gql`
   }
 
   extend type Mutation {
-    signUp(email: String!, username: String!, name: String!, password: String!): User
+    signUp(
+      email: String!
+      username: String!
+      name: String!
+      password: String!
+    ): User
   }
 
   type User {
@@ -18,3 +44,5 @@ module.exports = gql`
     createdAt: String
   }
 `;
+
+module.exports.signupValidator = signupValidator;
