@@ -1,3 +1,4 @@
 const user = require("./user");
+const invoice = require('./invoice');
 
-module.exports = [user];
+module.exports = [user, invoice];

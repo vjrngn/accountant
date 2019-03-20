@@ -10,11 +10,9 @@ const schemas = require("./schemas");
 
 const {
   APP_ENV = "development",
-  DB_NAME,
-  DB_HOST,
-  DB_PORT,
-  DB_USERNAME = '',
-  DB_PASSWORD = ''
+  DB_NAME = "accountant",
+  DB_HOST = "localhost",
+  DB_PORT = 27017,
 } = process.env;
 
 mongoose.connect(

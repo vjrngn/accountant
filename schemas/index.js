@@ -1,5 +1,6 @@
 const { gql } = require("apollo-server-express");
 const user = require("./user");
+const invoice = require('./invoice');
 
 const root = gql`
   type Query {
@@ -17,5 +18,6 @@ const root = gql`
 
 module.exports = [
   root,
-  user
+  user,
+  invoice
 ];
