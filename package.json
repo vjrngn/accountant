@@ -6,6 +6,7 @@
     "start": "nodemon ./bin/www"
   },
   "dependencies": {
+    "@graphql-modules/core": "^0.6.5",
     "apollo-server-express": "^2.4.8",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "~1.4.3",

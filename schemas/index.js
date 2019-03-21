@@ -1,23 +1,5 @@
-const { gql } = require("apollo-server-express");
 const user = require("./user");
-const invoice = require('./invoice');
+const invoice = require("./invoice");
+const business = require("./business");
 
-const root = gql`
-  type Query {
-    _: String
-  }
-
-  type Mutation {
-    _: String
-  }
-
-  type Subscription {
-    _: String
-  }
-`;
-
-module.exports = [
-  root,
-  user,
-  invoice
-];
+module.exports = [user, invoice, business];
