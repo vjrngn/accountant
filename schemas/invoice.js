@@ -6,6 +6,7 @@ module.exports = new GraphQLModule({
   typeDefs: gql`
     type Query {
       invoices: [Invoice!]!
+      invoice(id: ID!): Invoice
     }
 
     type Business {

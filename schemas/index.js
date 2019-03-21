@@ -1,5 +1,8 @@
-const user = require("./user");
-const invoice = require("./invoice");
-const business = require("./business");
+const fs = require("fs");
 
-module.exports = [user, invoice, business];
+const schemas = fs
+  .readdirSync(__dirname)
+  .filter(file => file !== "index.js")
+  .map(file => require(`./${file}`));
+
+module.exports = schemas;
