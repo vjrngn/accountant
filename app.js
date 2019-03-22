@@ -7,6 +7,7 @@ const logger = require("morgan");
 const { ApolloServer } = require("apollo-server-express");
 const { GraphQLModule } = require("@graphql-modules/core");
 const schemas = require("./schemas");
+const passport = require('./config/auth');
 
 const {
   APP_ENV = "development",
@@ -41,6 +42,7 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(passport.initialize());
 
 apolloServer.applyMiddleware({ app });
 
