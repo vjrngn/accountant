@@ -1,9 +1,9 @@
-const mongoose = require("mongoose");
 const { User } = require("../models");
 const Joi = require("joi");
-const { signUpValidtor } = require("../validators/user");
-const { UserInputError } = require("apollo-server-express");
+const { signupValidator } = require("../validators/user");
 const jwt = require("jsonwebtoken");
+const { successResponse } = require("../utils");
+const convertToForm = require("joi-errors-for-forms").form();
 
 const { JWT_SECRET } = process.env;
 
@@ -23,12 +23,16 @@ module.exports = {
   },
 
   Mutation: {
-    signUp: async (root, args, context, info) => {
-      // TODO: validation
-
+    signUp: async (_, args) => {
       const { username, email, name, password } = args;
 
       try {
+        await Joi.validate(
+          { username, email, name, password },
+          signupValidator,
+          { abortEarly: false }
+        );
+
         const user = await User.signUp({
           username,
           email,
@@ -38,18 +42,16 @@ module.exports = {
 
         const token = jwt.sign({ sub: user.id }, JWT_SECRET);
 
-        return {
-          code: 201,
-          success: true,
+        return successResponse({
           message: "User signed up successfully",
           user,
           token
-        };
+        });
       } catch (error) {
         return {
           code: error.code || "",
           success: false,
-          message: error.message
+          message: error.isJoi ? convertToForm(error) : error.message
         };
       }
     }

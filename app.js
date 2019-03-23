@@ -7,7 +7,7 @@ const logger = require("morgan");
 const { ApolloServer } = require("apollo-server-express");
 const { GraphQLModule } = require("@graphql-modules/core");
 const schemas = require("./schemas");
-const passport = require('./config/auth');
+const passport = require("./config/auth");
 
 const {
   APP_ENV = "development",

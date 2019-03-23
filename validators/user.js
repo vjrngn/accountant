@@ -12,6 +12,7 @@ module.exports.signupValidator = Joi.object().keys({
     .required()
     .label("Username"),
   password: Joi.string()
+    .min(6)
     .required()
     .label("Password"),
   email: Joi.string()
