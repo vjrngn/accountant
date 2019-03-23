@@ -13,6 +13,10 @@ module.exports = new JWTStrategy(
     try {
       const user = await User.findById(payload.sub);
 
+      if (!user) {
+        return done(null, false);
+      }
+
       done(null, user);
     } catch (e) {
       done(null, false);
