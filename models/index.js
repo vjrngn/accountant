@@ -1,9 +1,11 @@
 const User = require("./User");
 const Invoice = require("./Invoice");
 const Business = require("./Business");
+const Client = require("./Client");
 
 module.exports = {
   User,
   Invoice,
-  Business
+  Business,
+  Client
 };
