@@ -1,8 +1,11 @@
-const mongoose = require("mongoose");
 const { User } = require("../models");
 const Joi = require("joi");
-const { signUpValidtor } = require("../validators/user");
-const { UserInputError } = require("apollo-server-express");
+const { signupValidator } = require("../validators/user");
+const jwt = require("jsonwebtoken");
+const { successResponse } = require("../utils");
+const convertToForm = require("joi-errors-for-forms").form();
+
+const { JWT_SECRET } = process.env;
 
 module.exports = {
   Query: {
@@ -15,26 +18,42 @@ module.exports = {
     user: (root, args, context, info) => {
       // TODO: auth, sanitization, projection
 
-      if (!mongoose.Types.ObjectId.isValid(args.id)) {
-        throw new UserInputError("No user found");
-      }
-
       return User.findById(args.id);
     }
   },
 
   Mutation: {
-    signUp: (root, args, context, info) => {
-      // TODO: validation
-
+    signUp: async (_, args) => {
       const { username, email, name, password } = args;
 
-      return User.create({
-        username,
-        email,
-        name,
-        password
-      });
+      try {
+        await Joi.validate(
+          { username, email, name, password },
+          signupValidator,
+          { abortEarly: false }
+        );
+
+        const user = await User.signUp({
+          username,
+          email,
+          name,
+          password
+        });
+
+        const token = jwt.sign({ sub: user.id }, JWT_SECRET);
+
+        return successResponse({
+          message: "User signed up successfully",
+          user,
+          token
+        });
+      } catch (error) {
+        return {
+          code: error.code || "",
+          success: false,
+          message: error.isJoi ? convertToForm(error) : error.message
+        };
+      }
     }
   }
 };

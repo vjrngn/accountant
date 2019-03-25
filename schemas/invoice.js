@@ -1,32 +1,25 @@
 const { gql } = require("apollo-server-express");
 const invoiceResolvers = require("../resolvers/invoice");
 const { GraphQLModule } = require("@graphql-modules/core");
+const userSchema = require("./user");
+const businessSchema = require("./business");
+const clientSchema = require("./client");
+const invoiceItemSchema = require("./invoiceItem");
+const taxItemSchema = require("./taxItem");
 
 module.exports = new GraphQLModule({
+  imports: [
+    userSchema,
+    businessSchema,
+    clientSchema,
+    invoiceItemSchema,
+    taxItemSchema
+  ],
+
   typeDefs: gql`
     type Query {
       invoices: [Invoice!]!
       invoice(id: ID!): Invoice
-    }
-
-    type Business {
-      _: String
-    }
-
-    type User {
-      _: String
-    }
-
-    type Client {
-      _: String
-    }
-
-    type InvoiceItem {
-      id: ID!
-    }
-
-    type TaxItem {
-      id: ID!
     }
 
     type Invoice {
@@ -42,5 +35,6 @@ module.exports = new GraphQLModule({
       createdAt: String!
     }
   `,
+
   resolvers: invoiceResolvers
 });

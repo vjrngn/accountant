@@ -1,12 +1,21 @@
 const { gql } = require("apollo-server-express");
 const { GraphQLModule } = require("@graphql-modules/core");
-const userResolvers = require('../resolvers/user');
+const userResolvers = require("../resolvers/user");
+const Response = require('./response');
 
 module.exports = new GraphQLModule({
+  imports: [
+    Response
+  ],
   typeDefs: gql`
     type Query {
       user(id: ID!): User
       users: [User!]!
+    }
+
+    extend type Response {
+      token: String
+      user: User
     }
 
     type Mutation {
@@ -15,7 +24,7 @@ module.exports = new GraphQLModule({
         username: String!
         name: String!
         password: String!
-      ): User
+      ): Response
     }
 
     type User {
@@ -28,27 +37,3 @@ module.exports = new GraphQLModule({
   `,
   resolvers: userResolvers
 });
-
-// module.exports = gql`
-//   extend type Query {
-//     user(id: ID!): User
-//     users: [User!]!
-//   }
-
-//   extend type Mutation {
-//     signUp(
-//       email: String!
-//       username: String!
-//       name: String!
-//       password: String!
-//     ): User
-//   }
-
-//   type User {
-//     id: ID!
-//     name: String!
-//     email: String!
-//     username: String!
-//     createdAt: String
-//   }
-// `;
