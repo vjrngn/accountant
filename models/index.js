@@ -4,6 +4,7 @@ const Business = require("./Business");
 const Client = require("./Client");
 const Payment = require("./Payment");
 const Product = require("./Product");
+const Currency = require("./Currency");
 
 module.exports = {
   User,
@@ -11,5 +12,6 @@ module.exports = {
   Business,
   Client,
   Payment,
-  Product
+  Product,
+  Currency
 };
