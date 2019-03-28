@@ -1,3 +1,4 @@
 module.exports = {
-  successResponse: require("./successResponse")
+  successResponse: require("./successResponse"),
+  objectValues: require("./objectValues")
 };

@@ -1,4 +1,4 @@
-const User = require("../../../models/User");
+const { User } = require("../../../modules");
 const JWTStrategy = require("passport-jwt").Strategy;
 const Extractor = require("passport-jwt").ExtractJwt;
 
@@ -11,7 +11,10 @@ module.exports = new JWTStrategy(
   },
   async function(payload, done) {
     try {
-      const user = await User.findById(payload.sub);
+      const user = await User.findById(
+        payload.sub,
+        "name email username createdAt updatedAt"
+      );
 
       if (!user) {
         return done(null, false);
