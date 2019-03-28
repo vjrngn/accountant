@@ -13,7 +13,10 @@ const schema = new Schema(
     country: String,
     zip: String,
     taxRegistrations: [Schema.Types.Mixed],
-    logoUrl: String
+    logoUrl: String,
+
+    /** meta */
+    verifiedAt: Date
   },
   {
     timestamps: true

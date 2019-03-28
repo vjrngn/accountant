@@ -1,13 +1,9 @@
-const Business = require("../model");
-
 module.exports = {
-  async findById(user, id) {
-    if (!user) return null;
-
-    const business = await Business.findById(id);
-
-    if (!business) return null;
-
-    return business;
+  register: async (args, options) => {
+    // 1. validate input
+    // 2. check business is unique
+    // 3. register the business
+    // 4. if verifyEmail sendVerificationEmail
+    //    else mark as verified
   }
 };
