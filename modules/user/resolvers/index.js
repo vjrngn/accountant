@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { User } = require("../model");
+const User = require("../model");
 const userRepository = require("../repository");
 const { successResponse } = require("../../../utils");
 const convertToForm = require("joi-errors-for-forms").form();
@@ -9,7 +9,6 @@ const { JWT_SECRET } = process.env;
 module.exports = {
   Query: {
     users: (root, args, { req, user }, info) => {
-      console.log(req, user);
       // TODO: auth, pagination, projection
 
       return User.find({});
