@@ -6,8 +6,9 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const { ApolloServer } = require("apollo-server-express");
 const { GraphQLModule } = require("@graphql-modules/core");
-const schemas = require("./schemas");
 const passport = require("./config/auth");
+const { schemas } = require("./modules");
+const { objectValues } = require("./utils");
 
 const {
   APP_ENV = "development",
@@ -21,15 +22,14 @@ mongoose.connect(`mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`, {
 });
 
 const appModule = new GraphQLModule({
-  imports: schemas
+  imports: objectValues(schemas)
 });
 
 const apolloServer = new ApolloServer({
   schema: appModule.schema,
-  context: ({ req, res }) => {
+  context: ({ req }) => {
     return {
       req,
-      res,
       user: req.user
     };
   },
@@ -46,7 +46,7 @@ app.use(cookieParser());
 app.use(passport.initialize());
 
 app.use("/graphql", function(req, res, next) {
-  passport.authenticate("jwt", { session: false }, (error) => {
+  passport.authenticate("jwt", { session: false }, (error, user) => {
     if (error) {
       res.json({
         code: 500,
@@ -54,6 +54,8 @@ app.use("/graphql", function(req, res, next) {
         message: "Internal Server Error"
       });
     }
+
+    req.user = user ? user : undefined;
     next();
   })(req, res, next);
 });

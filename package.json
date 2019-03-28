@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon ./bin/www",
+    "test": "mocha --file test/setup.js"
   },
   "dependencies": {
     "@graphql-modules/core": "^0.6.5",
@@ -23,8 +24,13 @@
     "passport-jwt": "^4.0.0"
   },
   "devDependencies": {
+    "@types/chai": "^4.1.7",
     "@types/mongoose": "^5.3.23",
+    "@types/passport-jwt": "^3.0.1",
+    "chai": "^4.2.0",
     "dotenv": "^7.0.0",
+    "faker": "^4.1.0",
+    "mocha": "^6.0.2",
     "nodemon": "^1.18.10"
   }
 }
